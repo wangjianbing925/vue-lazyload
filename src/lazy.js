@@ -117,9 +117,8 @@ export default function (Vue) {
                 if (!$parent) {
                     $parent = scrollParent(el)
                 }
-
                 const newListener = new ReactiveListener({
-                    bindType: binding.arg,
+                    bindType: el.nodeName.toUpperCase() === 'IMG' ? '' : 'backgroundImage',
                     $parent,
                     el,
                     loading,
