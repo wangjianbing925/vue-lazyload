@@ -1,8 +1,8 @@
-import { 
+import {
     inBrowser,
-    remove, 
-    some, 
-    find, 
+    remove,
+    some,
+    find,
     _,
     throttle,
     supportWebp,
@@ -61,7 +61,7 @@ export default function (Vue) {
 
         /**
          * output listener's load performance
-         * @return {Array} 
+         * @return {Array}
          */
         performance () {
             let list = []
@@ -90,7 +90,7 @@ export default function (Vue) {
 
         /**
          * add image listener to queue
-         * @param  {DOM} el 
+         * @param  {DOM} el
          * @param  {object} binding vue directive binding
          * @param  {vnode} vnode vue directive vnode
          * @return
@@ -143,12 +143,12 @@ export default function (Vue) {
 
          /**
          * update image src
-         * @param  {DOM} el 
+         * @param  {DOM} el
          * @param  {object} vue directive binding
          * @return
          */
         update (el, binding) {
-            let { src, loading, error } = this._valueFormatter(binding.value)
+            let { src, loading, error } = this._valueFormatter(binding.value, binding, el)
 
             const exist = find(this.ListenerQueue, item => item.el === el)
 
@@ -163,7 +163,7 @@ export default function (Vue) {
 
         /**
          * remove listener form list
-         * @param  {DOM} el 
+         * @param  {DOM} el
          * @return
          */
         remove (el) {
@@ -178,7 +178,7 @@ export default function (Vue) {
 
         /**
          * remove lazy components form list
-         * @param  {Vue} vm Vue instance 
+         * @param  {Vue} vm Vue instance
          * @return
          */
         removeComponent (vm) {
@@ -189,12 +189,12 @@ export default function (Vue) {
             }
             this._removeListenerTarget(window)
         }
-        
+
         /**** Private functions ****/
 
         /**
          * add listener target
-         * @param  {DOM} el listener target 
+         * @param  {DOM} el listener target
          * @return
          */
         _addListenerTarget (el) {
@@ -283,7 +283,7 @@ export default function (Vue) {
          * set element attribute with image'url and state
          * @param  {object} lazyload listener object
          * @param  {string} state will be rendered
-         * @param  {bool} inCache  is rendered from cache 
+         * @param  {bool} inCache  is rendered from cache
          * @return
          */
         _elRenderer (listener, state, cache) {
@@ -316,11 +316,13 @@ export default function (Vue) {
         }
 
         /**
-         * generate loading loaded error image url 
+         * generate loading loaded error image url
          * @param {string} image's src
          * @return {object} image's loading, loaded, error url
          */
-        _valueFormatter (value) {
+        _valueFormatter (value, binding, el) {
+            console.info(binding)
+            console.info(el)
             let src = value
             let loading = this.options.loading
             let error = this.options.error
