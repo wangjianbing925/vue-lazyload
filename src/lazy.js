@@ -100,8 +100,7 @@ export default function (Vue) {
                 this.update(el, binding)
                 return Vue.nextTick(this.lazyLoadHandler)
             }
-
-            let { src, loading, error } = this._valueFormatter(binding.value)
+            let { src, loading, error } = this._valueFormatter(binding.value, el)
 
             Vue.nextTick(() => {
                 src = getBestSelectionFromSrcset(el, this.options.scale) || src
@@ -141,14 +140,14 @@ export default function (Vue) {
             })
         }
 
-         /**
+        /**
          * update image src
          * @param  {DOM} el
          * @param  {object} vue directive binding
          * @return
          */
         update (el, binding) {
-            let { src, loading, error } = this._valueFormatter(binding.value, binding, el)
+            let { src, loading, error } = this._valueFormatter(binding.value, el)
 
             const exist = find(this.ListenerQueue, item => item.el === el)
 
@@ -320,12 +319,11 @@ export default function (Vue) {
          * @param {string} image's src
          * @return {object} image's loading, loaded, error url
          */
-        _valueFormatter (value, binding, el) {
-            console.info(binding)
-            console.info(el)
+        _valueFormatter (value, el) {
             let src = value
-            let loading = this.options.loading
-            let error = this.options.error
+            let defaultSrc = el.getAttribute('default-src');
+            let loading = defaultSrc || this.options.loading
+            let error = defaultSrc || this.options.error
 
             // value is object
             if (isObject(value)) {
